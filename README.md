@@ -11,4 +11,4 @@ MySQL 학습을 위한 프로젝트 입니다.
 ## 진행 사항
 
 - ERD
-  ![ERD]("server/docs/ERD.png")
+  ![ERD](./server/docs/ERD.png)
