@@ -7,3 +7,8 @@ MySQL 학습을 위한 프로젝트 입니다.
 ## 프로젝트 내용
 
 서비스 로직을 변경하지 않고 DB 변경(mongoDB -> MySQL)
+
+## 진행 사항
+
+- ERD
+  ![ERD]("./docs/ERD.png")
