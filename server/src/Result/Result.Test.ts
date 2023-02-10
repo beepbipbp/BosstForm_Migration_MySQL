@@ -3,12 +3,8 @@ import request from "supertest";
 import * as dotenv from "dotenv";
 import { BeforeRecover } from "typeorm";
 import app from "../app";
-import connectMongoDB from "../Loader/Mongo.Loader";
 
 dotenv.config();
-beforeAll(async () => {
-  await connectMongoDB();
-});
 describe("GET api/results/:formId", () => {
   const testFormId = "637e2d875d07882cfce8a076";
   const testResult = {

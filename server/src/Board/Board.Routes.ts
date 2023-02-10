@@ -1,8 +1,8 @@
-import express from "express";
-import BoardController from "./Board.Controller";
+// import express from "express";
+// import BoardController from "./Board.Controller";
 
-const boardRouter = express.Router();
+// const boardRouter = express.Router();
 
-boardRouter.get("/", BoardController.getFormList);
+// boardRouter.get("/", BoardController.getFormList);
 
-export default boardRouter;
+// export default boardRouter;

@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "start": "tsc -p . && node ./dist/server.js",
-    "dev": "nodemon -e ts --watch \"./src\" --exec \"npm start\"",
+    "dev": "nodemon -e ts --watch \"./src\" --exec \"npm run start\"",
     "test": "jest"
   },
   "dependencies": {

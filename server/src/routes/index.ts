@@ -1,9 +1,10 @@
 import express, { Request, Response } from "express";
+import User from "../User/User.Model";
 import userRouter from "../User/User.Router";
-import formRouter from "../Form/Form.Routes";
-import boardRouter from "../Board/Board.Routes";
-import resultRouter from "../Result/Result.Router";
-import responseRouter from "../Response/Response.Routes";
+// import formRouter from "../Form/Form.Routes";
+// import boardRouter from "../Board/Board.Routes";
+// import resultRouter from "../Result/Result.Router";
+// import responseRouter from "../Response/Response.Routes";
 
 const router = express.Router();
 
@@ -14,12 +15,23 @@ router.get("/", (req: Request, res: Response) => {
 
 router.use("/api/users", userRouter);
 
-router.use("/api/forms", formRouter);
+router.post("/test", async (req: Request, res: Response) => {
+  const newUser = new User();
+  newUser.name = "aaa";
 
-router.use("/api/board", boardRouter);
+  await newUser.save();
 
-router.use("/api/results", resultRouter);
+  res.status(200).json({
+    success: true,
+  });
+});
 
-router.use("/api/responses", responseRouter);
+// router.use("/api/forms", formRouter);
+
+// router.use("/api/board", boardRouter);
+
+// router.use("/api/results", resultRouter);
+
+// router.use("/api/responses", responseRouter);
 
 export default router;

@@ -1,8 +1,8 @@
-import express from "express";
-import resultController from "./Result.Controller";
+// import express from "express";
+// import resultController from "./Result.Controller";
 
-const router = express.Router();
+// const router = express.Router();
 
-router.get("/:formId", resultController.formResult);
+// router.get("/:formId", resultController.formResult);
 
-export default router;
+// export default router;
