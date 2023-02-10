@@ -1,3 +1,3 @@
-import Form from "../Form/Form.Model";
+import Form from "../Form/entities/Form.Entity";
 
 export default Form;

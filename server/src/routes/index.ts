@@ -1,5 +1,4 @@
 import express, { Request, Response } from "express";
-import User from "../User/User.Model";
 import userRouter from "../User/User.Router";
 // import formRouter from "../Form/Form.Routes";
 // import boardRouter from "../Board/Board.Routes";
@@ -14,17 +13,6 @@ router.get("/", (req: Request, res: Response) => {
 });
 
 router.use("/api/users", userRouter);
-
-router.post("/test", async (req: Request, res: Response) => {
-  const newUser = new User();
-  newUser.name = "aaa";
-
-  await newUser.save();
-
-  res.status(200).json({
-    success: true,
-  });
-});
 
 // router.use("/api/forms", formRouter);
 

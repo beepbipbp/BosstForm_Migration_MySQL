@@ -1,5 +1,4 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
-import CATEGORY_LIST from "./Form.enum";
+import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
 
 @Entity()
 export default class Form {
@@ -28,7 +27,6 @@ export default class Form {
   @Column({
     type: "varchar",
     length: 15,
-    enum: CATEGORY_LIST,
     nullable: true,
   })
   category: string;
@@ -62,4 +60,10 @@ export default class Form {
     default: 0,
   })
   response_count: number;
+
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

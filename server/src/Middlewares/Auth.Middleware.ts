@@ -3,7 +3,7 @@ import jwt, { JsonWebTokenError, JwtPayload } from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import UnauthorizedException from "../Common/Exceptions/Unauthorized.Exception";
 import tokens from "../User/types/tokens.inteface";
-import UserModel from "../User/User.Model";
+import UserModel from "../User/entities/User.Entity";
 import InteranlServerException from "../Common/Exceptions/InternalServer.Exception";
 import userService from "../User/User.Service";
 

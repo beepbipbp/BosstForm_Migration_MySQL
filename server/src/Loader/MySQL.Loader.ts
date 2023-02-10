@@ -1,8 +1,7 @@
 import * as dotenv from "dotenv";
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import Form from "../Form/Form.Model";
-import User from "../User/User.Model";
+import * as path from "path";
 
 dotenv.config();
 const myDataSource = new DataSource({
@@ -12,7 +11,8 @@ const myDataSource = new DataSource({
   username: process.env.TYPEORM_USERNAME || "",
   password: process.env.TYPEORM_PASSWORD || "",
   database: process.env.TYPEORM_DATABASE || "",
-  entities: [User, Form],
+  entities: [path.join(__dirname, "/../**/*.Entity.js")],
+  synchronize: true,
 });
 
 export default myDataSource;

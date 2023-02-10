@@ -3,7 +3,7 @@ import axios from "axios";
 import jwt from "jsonwebtoken";
 import * as dotenv from "dotenv";
 import tokens from "./types/tokens.inteface";
-import UserModel from "./User.Model";
+import UserModel from "./entities/User.Entity";
 import InternalServerException from "../Common/Exceptions/InternalServer.Exception";
 import UnauthorizedException from "../Common/Exceptions/Unauthorized.Exception";
 

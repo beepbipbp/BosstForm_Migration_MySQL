@@ -4,7 +4,7 @@ import request from "supertest";
 import * as dotenv from "dotenv";
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import User from "./User.Model";
+import User from "./entities/User.Entity";
 import app from "../app";
 
 dotenv.config();
