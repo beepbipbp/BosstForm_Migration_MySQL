@@ -1,6 +1,7 @@
-import mongoose from "mongoose";
-import { FormSchema } from "./Form.Schema";
+import { Column, Entity } from "typeorm";
 
-const Form = mongoose.model("Form", FormSchema);
-
-export default Form;
+@Entity()
+export default class Form {
+  @Column()
+  form: number;
+}
