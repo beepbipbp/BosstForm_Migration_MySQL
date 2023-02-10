@@ -1,8 +1,8 @@
-import { Column, Entity, Timestamp } from "typeorm";
+import { Column, Entity, PrimaryColumn } from "typeorm";
 
 @Entity()
 export default class Form {
-  @Column()
+  @PrimaryColumn()
   form_id: number;
 
   @Column()
