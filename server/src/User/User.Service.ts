@@ -56,11 +56,11 @@ class UserService {
     if (!user) {
       user = await this.signUp(userName);
     }
-    if (!user || typeof user.id !== "number") {
+    if (!user || typeof user.user_id !== "number") {
       throw new InternalServerException();
     }
-    const accessToken = this.generateToken(user.id, "1m");
-    const refreshToken = this.generateToken(user.id, "7d");
+    const accessToken = this.generateToken(user.user_id, "1m");
+    const refreshToken = this.generateToken(user.user_id, "7d");
     user.refresh_token = refreshToken;
     user.save();
     return { accessToken, refreshToken };
@@ -68,7 +68,7 @@ class UserService {
 
   signUp(userName: string): Promise<UserModel> {
     const newUser = new UserModel();
-    newUser.name = userName;
+    newUser.user_name = userName;
     return newUser.save();
   }
 
@@ -83,7 +83,7 @@ class UserService {
     if (!targetUser) {
       throw new InternalServerException();
     }
-    return { userID: targetUser.id, userName: targetUser.name };
+    return { userID: targetUser.user_id, userName: targetUser.user_name };
   }
 
   async logout(userID: number) {

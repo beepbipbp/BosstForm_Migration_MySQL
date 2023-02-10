@@ -15,21 +15,21 @@ export default class Form {
     length: "50",
     default: "제목 없음",
   })
-  title: string;
+  form_title: string;
 
   @Column({
     type: "varchar",
     length: 100,
     nullable: true,
   })
-  description: string;
+  form_description: string;
 
   @Column({
     type: "varchar",
     length: 15,
     nullable: true,
   })
-  category: string;
+  form_category: string;
 
   @Column({
     type: "boolean",
