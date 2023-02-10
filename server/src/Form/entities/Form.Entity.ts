@@ -1,14 +1,13 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import User from "../../User/entities/User.Entity";
 
 @Entity()
 export default class Form {
   @PrimaryGeneratedColumn()
   form_id: number;
 
-  @Column({
-    type: "int",
-  })
-  fk_user_id: number;
+  @ManyToOne(() => User, (user) => user.user_id)
+  author: User;
 
   @Column({
     type: "varchar",

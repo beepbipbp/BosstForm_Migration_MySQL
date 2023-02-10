@@ -2,6 +2,7 @@ import * as dotenv from "dotenv";
 import "reflect-metadata";
 import { DataSource } from "typeorm";
 import * as path from "path";
+import { SnakeNamingStrategy } from "typeorm-naming-strategies";
 
 dotenv.config();
 const myDataSource = new DataSource({
@@ -13,6 +14,7 @@ const myDataSource = new DataSource({
   database: process.env.TYPEORM_DATABASE || "",
   entities: [path.join(__dirname, "/../**/*.Entity.js")],
   synchronize: true,
+  namingStrategy: new SnakeNamingStrategy(),
 });
 
 export default myDataSource;
