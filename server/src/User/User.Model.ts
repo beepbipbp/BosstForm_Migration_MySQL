@@ -5,11 +5,15 @@ export default class User extends BaseEntity {
   @PrimaryGeneratedColumn()
   id?: number;
 
-  @Column({ nullable: false })
+  @Column({
+    type: "varchar",
+    length: 20,
+  })
   name?: string;
 
   @Column({
-    type: "text",
+    type: "varchar",
+    length: 200,
     nullable: true,
   })
   refresh_token?: string | null;
