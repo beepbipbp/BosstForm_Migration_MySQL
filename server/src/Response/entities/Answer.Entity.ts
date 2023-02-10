@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-Entity();
+@Entity()
 export default class Answer {
   @PrimaryGeneratedColumn()
   answer_id: number;

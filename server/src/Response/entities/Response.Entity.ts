@@ -1,8 +1,8 @@
-import { Column, Entity, Index, PrimaryColumn } from "typeorm";
+import { Column, Entity, Index, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity()
-export default class ResponseEntity {
-  @PrimaryColumn()
+export default class Response {
+  @PrimaryGeneratedColumn()
   response_id: number;
 
   @Column({

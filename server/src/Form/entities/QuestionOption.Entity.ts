@@ -1,6 +1,6 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-Entity();
+@Entity()
 export default class QuestionOption {
   @PrimaryGeneratedColumn()
   question_option_id: number;
