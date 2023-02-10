@@ -5,6 +5,4 @@ myDataSource.initialize().then(() => {
   console.log("Data Source has been initialized!");
 });
 
-connectMongoDB();
-
 app.listen(process.env.PORT);
