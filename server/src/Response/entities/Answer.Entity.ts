@@ -5,9 +5,13 @@ export default class Answer {
   @PrimaryGeneratedColumn()
   answer_id: number;
 
-  @Column()
+  @Column({
+    type: "int",
+  })
   fk_response_id: number;
 
-  @Column()
+  @Column({
+    type: "int",
+  })
   fk_question_id: number;
 }
