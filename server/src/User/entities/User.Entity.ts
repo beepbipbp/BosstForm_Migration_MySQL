@@ -27,10 +27,10 @@ export default class User extends BaseEntity {
   responses: ResponseEntity[];
 
   static findOneByName(userName: string) {
-    return this.createQueryBuilder("user").where("user.Name = :userName", { userName }).getOne();
+    return this.createQueryBuilder("user").where("user.user_name = :userName", { userName }).getOne();
   }
 
   static findOneByID(userID: number) {
-    return this.createQueryBuilder("user").where("user.id = :userID", { userID }).getOne();
+    return this.createQueryBuilder("user").where("user.user_id = :userID", { userID }).getOne();
   }
 }
