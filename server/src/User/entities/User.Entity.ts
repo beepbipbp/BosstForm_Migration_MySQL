@@ -20,7 +20,7 @@ export default class User extends BaseEntity {
   })
   refresh_token: string | null;
 
-  @OneToMany(() => Form, (form) => form.author)
+  @OneToMany(() => Form, (form) => form.user)
   forms: Form[];
 
   @OneToMany(() => ResponseEntity, (response) => response.respondent)

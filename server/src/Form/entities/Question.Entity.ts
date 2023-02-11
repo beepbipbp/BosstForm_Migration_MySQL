@@ -1,14 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import Form from "./Form.Entity";
 
 @Entity()
 export default class Question {
   @PrimaryGeneratedColumn()
   question_id: number;
 
-  @Column({
-    type: "int",
-  })
-  fk_form_id: number;
+  @ManyToOne(() => Form, (form) => form.form_id, { nullable: false })
+  @JoinColumn({ name: "fk_form_id", referencedColumnName: "form_id" })
+  form: Form;
 
   @Column({
     type: "int",

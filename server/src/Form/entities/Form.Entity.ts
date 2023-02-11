@@ -1,13 +1,25 @@
-import { Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from "typeorm";
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from "typeorm";
+import ResponseEntity from "../../Response/entities/Response.Entity";
 import User from "../../User/entities/User.Entity";
+import Question from "./Question.Entity";
 
 @Entity()
 export default class Form {
   @PrimaryGeneratedColumn()
   form_id: number;
 
-  @ManyToOne(() => User, (user) => user.user_id)
-  author: User;
+  @ManyToOne(() => User, (user) => user.user_id, { nullable: false })
+  @JoinColumn({ name: "fk_user_id", referencedColumnName: "user_id" })
+  user: User;
 
   @Column({
     type: "varchar",
@@ -65,4 +77,10 @@ export default class Form {
 
   @UpdateDateColumn()
   updated_at: Date;
+
+  @OneToMany(() => Question, (question) => question.form)
+  questions: Question[];
+
+  @OneToMany(() => ResponseEntity, (response) => response.form)
+  responses: ResponseEntity[];
 }
