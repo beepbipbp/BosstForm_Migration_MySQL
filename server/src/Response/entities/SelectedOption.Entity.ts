@@ -1,14 +1,14 @@
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import Answer from "./Answer.Entity";
 
 @Entity()
 export default class SelectedOption {
   @PrimaryGeneratedColumn()
   selected_option_id: number;
 
-  @Column({
-    type: "int",
-  })
-  fk_answer_id: number;
+  @ManyToOne(() => Answer, (answer) => answer.answer_id, { nullable: false })
+  @JoinColumn({ name: "fk_answer_id", referencedColumnName: "answer_id" })
+  answer: Answer;
 
   @Column({
     type: "varchar",

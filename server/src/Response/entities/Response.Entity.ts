@@ -1,6 +1,7 @@
-import { Entity, Index, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Entity, Index, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import Form from "../../Form/entities/Form.Entity";
 import User from "../../User/entities/User.Entity";
+import Answer from "./Answer.Entity";
 
 @Entity("response")
 export default class ResponseEntity {
@@ -15,4 +16,7 @@ export default class ResponseEntity {
   @JoinColumn({ name: "fk_form_id", referencedColumnName: "form_id" })
   @Index()
   form: Form;
+
+  @OneToMany(() => Answer, (answer) => answer.response)
+  answers: Answer[];
 }

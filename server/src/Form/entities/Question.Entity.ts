@@ -1,5 +1,7 @@
-import { Column, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
+import Answer from "../../Response/entities/Answer.Entity";
 import Form from "./Form.Entity";
+import QuestionOption from "./QuestionOption.Entity";
 
 @Entity()
 export default class Question {
@@ -39,4 +41,10 @@ export default class Question {
     default: false,
   })
   etc_added: true;
+
+  @OneToMany(() => QuestionOption, (questionOption) => questionOption.question)
+  question_options: QuestionOption[];
+
+  @OneToMany(() => Answer, (answer) => answer.question)
+  answers: Answer[];
 }
