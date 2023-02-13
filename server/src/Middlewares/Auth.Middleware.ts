@@ -71,11 +71,13 @@ const accessJWTErrorHandler = async (err: JsonWebTokenError, req: Request, res: 
       req.userID = decodeToken(reissuedTokens.accessToken);
       next();
     } catch (reissueError) {
+      console.log("aaaaaa");
       res.clearCookie("accessToken").clearCookie("refreshToken");
       next(reissueError);
     }
   }
   if (err.message === "invalid token") {
+    console.log("bbbbbbb");
     res.clearCookie("accessToken").clearCookie("refreshToken");
     next(new UnauthorizedException("invalid token"));
   }

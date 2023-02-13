@@ -26,9 +26,11 @@ class UserController {
       .login(code)
       .then((tokens) => {
         res
+          .setHeader("SameSite", "none")
           .status(200)
-          .cookie("accessToken", tokens.accessToken, { domain: "http://127.0.0.1:3000", maxAge: 60000000 })
-          .cookie("refreshToken", tokens.refreshToken, { domain: "http://127.0.0.1:3000" })
+          .header("Same")
+          .cookie("accessToken", tokens.accessToken)
+          .cookie("refreshToken", tokens.refreshToken, { httpOnly: true })
           .redirect(`${process.env.ORIGIN_URL as string}/myForms`);
       })
       .catch((err) => {
