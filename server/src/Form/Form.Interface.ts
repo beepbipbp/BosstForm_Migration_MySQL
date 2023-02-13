@@ -30,7 +30,7 @@ interface FormDTOInterface {
 }
 
 interface FormInterface {
-  _id: string;
+  _id: number;
   user_id: number;
   title: string;
   description?: string;
