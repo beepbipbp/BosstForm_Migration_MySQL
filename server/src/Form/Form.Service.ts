@@ -12,8 +12,6 @@ export default class FormService {
 
   private static userRepository = myDataSource.getRepository(User);
 
-  private static queryBuilder = myDataSource.createQueryBuilder();
-
   static async createNewForm(userID: number) {
     // const newForm = new Form({ user_id: userID });
     // newForm.save().catch(() => {
@@ -32,68 +30,42 @@ export default class FormService {
   }
 
   static async getFormList(userID: number, cursor: string) {
-    // const rawFormList =
-    //   cursor === "empty"
-    //     ? await Form.find({ user_id: userID })
-    //         .sort({ _id: -1 })
-    //         .limit(5)
-    //         .lean()
-    //         .exec()
-    //         .catch(() => {
-    //           throw new NotFoundException();
-    //         })
-    //     : await Form.find({ user_id: userID, _id: { $lt: cursor } })
-    //         .sort({ _id: -1 })
-    //         .limit(5)
-    //         .lean()
-    //         .exec()
-    //         .catch(() => {
-    //           throw new NotFoundException();
-    //         });
+    let rawFormList;
 
-    const rawFormList =
-      cursor === "empty"
-        ? await this.queryBuilder
-            .select("form.form_id", "_id")
-            .addSelect("form.form_title", "title")
-            .addSelect("form.accept_response", "acceptResponse")
-            .addSelect("form.updated_at", "updatedAt")
-            .addSelect("form.on_board", "onBoard")
-            .addSelect("form.form_category", "category")
-            .addSelect("form.response_count", "response")
-            .from(Form, "form")
-            .where("form.fk_user_id = : :user_id ", { user_id: userID })
-            .orderBy("form.form_id", "DESC")
-            .limit(5)
-            .execute()
-        : await this.queryBuilder
-            .select("form.form_id", "_id")
-            .addSelect("form.form_title", "title")
-            .addSelect("form.accept_response", "acceptResponse")
-            .addSelect("form.updated_at", "updatedAt")
-            .addSelect("form.on_board", "onBoard")
-            .addSelect("form.form_category", "category")
-            .addSelect("form.response_count", "response")
-            .from(Form, "form")
-            .where("form.fk_user_id = : :user_id", { user_id: userID })
-            .andWhere("form.form_id < :cursor", { cursor })
-            .orderBy("form.form_id", "DESC")
-            .limit(5)
-            .execute();
+    if (cursor === "empty") {
+      rawFormList = await myDataSource
+        .createQueryBuilder()
+        .select("form_id", "_id")
+        .addSelect("form_title", "title")
+        .addSelect("accept_response", "acceptResponse")
+        .addSelect("updated_at", "updatedAt")
+        .addSelect("on_board", "onBoard")
+        .addSelect("form_category", "category")
+        .addSelect("response_count", "response")
+        .from(Form, "form")
+        .where("form.fk_user_id = :user_id ", { user_id: userID })
+        .orderBy("form_id", "DESC")
+        .limit(5)
+        .execute();
+    } else {
+      rawFormList = await myDataSource
+        .createQueryBuilder()
+        .select("form_id", "_id")
+        .addSelect("form_title", "title")
+        .addSelect("accept_response", "acceptResponse")
+        .addSelect("updated_at", "updatedAt")
+        .addSelect("on_board", "onBoard")
+        .addSelect("form_category", "category")
+        .addSelect("response_count", "response")
+        .from(Form, "form")
+        .where("fk_user_id = :user_id", { user_id: userID })
+        .andWhere("form_id < :cursor", { cursor })
+        .orderBy("form_id", "DESC")
+        .limit(5)
+        .execute();
+    }
 
-    // const formList = rawFormList.map((form: any) => {
-    //   return {
-    //     _id: `${form._id}`,
-    //     title: form.title,
-    //     acceptResponse: form.accept_response,
-    //     updatedAt: getDateString(form.updatedAt),
-    //     onBoard: form.on_board,
-    //     category: form.category,
-    //     response: form.response_count,
-    //   };
-    // });
-
-    const formList = rawFormList((form) => {
+    const formList = rawFormList.map((form) => {
       return {
         ...form,
         updatedAt: getDateString(form.updatedAt),

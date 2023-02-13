@@ -31,8 +31,6 @@ class FormController {
 
       const [formList, lastId] = await FormService.getFormList(userID, cursor);
 
-      console.log(formList, lastId);
-
       res.status(200).json({
         form: formList,
         lastId,
@@ -41,7 +39,6 @@ class FormController {
       console.log(err);
       next(err);
     }
-    res.status(200).json({ form: [], lastId: undefined });
   }
 
   // static async getForm(req: Request, res: Response, next: NextFunction) {

@@ -26,9 +26,7 @@ class UserController {
       .login(code)
       .then((tokens) => {
         res
-          .setHeader("SameSite", "none")
           .status(200)
-          .header("Same")
           .cookie("accessToken", tokens.accessToken)
           .cookie("refreshToken", tokens.refreshToken, { httpOnly: true })
           .redirect(`${process.env.ORIGIN_URL as string}/myForms`);
