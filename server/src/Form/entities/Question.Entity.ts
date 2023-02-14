@@ -1,7 +1,6 @@
 import { Column, Entity, JoinColumn, ManyToOne, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 import Answer from "../../Response/entities/Answer.Entity";
 import Form from "./Form.Entity";
-import QuestionOption from "./QuestionOption.Entity";
 
 @Entity()
 export default class Question {
@@ -42,8 +41,11 @@ export default class Question {
   })
   etc_added: boolean;
 
-  @OneToMany(() => QuestionOption, (questionOption) => questionOption.question)
-  question_options: QuestionOption[];
+  @Column({
+    type: "json",
+    nullable: true,
+  })
+  question_options: string[];
 
   @OneToMany(() => Answer, (answer) => answer.question)
   answers: Answer[];
