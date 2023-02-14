@@ -54,7 +54,7 @@ export default class FormService {
         .addSelect("on_board", "onBoard")
         .addSelect("form_category", "category")
         .addSelect("response_count", "response")
-        .from(Form, "form")
+        .from(Form, Form.name)
         .where("fk_user_id = :user_id", { user_id: userID })
         .andWhere("form_id < :cursor", { cursor })
         .orderBy("form_id", "DESC")
