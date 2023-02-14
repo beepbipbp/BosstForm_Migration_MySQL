@@ -15,8 +15,6 @@ export default class FormService {
 
   private static userRepository = myDataSource.getRepository(User);
 
-  private static queryBuilder = myDataSource.createQueryBuilder();
-
   static async createNewForm(userID: number) {
     const currentUser = await this.userRepository.findOneBy({ user_id: userID });
 
@@ -32,7 +30,8 @@ export default class FormService {
     let rawFormList;
 
     if (cursor === "empty") {
-      rawFormList = await this.queryBuilder
+      rawFormList = await myDataSource
+        .createQueryBuilder()
         .select("form_id", "_id")
         .addSelect("form_title", "title")
         .addSelect("accept_response", "acceptResponse")
@@ -46,7 +45,8 @@ export default class FormService {
         .limit(5)
         .execute();
     } else {
-      rawFormList = await this.queryBuilder
+      rawFormList = await myDataSource
+        .createQueryBuilder()
         .select("form_id", "_id")
         .addSelect("form_title", "title")
         .addSelect("accept_response", "acceptResponse")

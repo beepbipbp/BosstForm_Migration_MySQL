@@ -36,8 +36,6 @@ class FormController {
         throw new BadRequestException("로그인 후 설문지 리스트를 받을 수 있습니다.");
       }
 
-      console.log(`!!!!!!!!!!!!!!!!!!!!${cursor}!!!!!!!!!!!!!!!!!!!!`);
-
       const [formList, lastId] = await FormService.getFormList(userID, cursor);
 
       res.status(200).json({
