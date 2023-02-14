@@ -3,6 +3,7 @@ import BadRequestException from "../Common/Exceptions/BadRequest.Exception";
 import UnauthorizedException from "../Common/Exceptions/Unauthorized.Exception";
 import FormService from "./Form.Service";
 import redisCli from "../Loader/Redis.Loader";
+import InteranServerException from "../Common/Exceptions/InternalServer.Exception";
 
 class FormController {
   static async createNewForm(req: Request, res: Response, next: NextFunction) {
@@ -10,11 +11,17 @@ class FormController {
       throw new UnauthorizedException("로그인 후 설문지를 생성할 수 있습니다.");
     }
 
-    const formId = await FormService.createNewForm(req.userID);
+    try {
+      const formId = await FormService.createNewForm(req.userID);
 
-    res.status(201).json({
-      formId,
-    });
+      res.status(201).json({
+        formId,
+      });
+    } catch (err) {
+      console.log(err);
+
+      throw new InteranServerException(err.message);
+    }
   }
 
   static async getFormList(req: Request, res: Response, next: NextFunction) {
@@ -63,8 +70,9 @@ class FormController {
   //     await FormService.updateForm(formId, body);
   //     res.status(200).end();
 
-  //     const form = await FormService.getForm(formId);
-  //     redisCli.set(`form:${formId}`, JSON.stringify(form), { EX: 300 });
+  //     // Caching 관련 코드
+  //     // const form = await FormService.getForm(formId);
+  //     // redisCli.set(`form:${formId}`, JSON.stringify(form), { EX: 300 });
   //   } catch (err) {
   //     console.log(err);
 

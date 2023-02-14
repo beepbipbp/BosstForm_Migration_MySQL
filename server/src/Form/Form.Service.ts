@@ -13,12 +13,6 @@ export default class FormService {
   private static userRepository = myDataSource.getRepository(User);
 
   static async createNewForm(userID: number) {
-    // const newForm = new Form({ user_id: userID });
-    // newForm.save().catch(() => {
-    //   throw new BadRequestException();
-    // });
-    // return newForm.id;
-
     const currentUser = await this.userRepository.findOneBy({ user_id: userID });
 
     const newForm = new Form();
@@ -76,41 +70,41 @@ export default class FormService {
     return [formList, lastId];
   }
 
-  //   static async updateForm(formId: string, body: FormDTOInterface) {
-  //     let questionList;
-  //     if (body.questionList) {
-  //       questionList = body.questionList.map((q: QuestionDTOInterface) => {
-  //         return {
-  //           question_id: q.questionId,
-  //           page: q.page,
-  //           type: q.type,
-  //           title: q.title,
-  //           option: q.option,
-  //           essential: q.essential,
-  //           etc_added: q.etcAdded,
-  //         };
-  //       });
-  //     }
-
-  //     const updated = {
-  //       title: body.title,
-  //       description: body.description,
-  //       category: body.category,
-  //       question_list: questionList,
-  //       accept_response: body.acceptResponse,
-  //       on_board: body.onBoard,
-  //       login_required: body.loginRequired,
-  //       response_modifiable: body.responseModifiable,
-  //     };
-
-  //     await Form.findOneAndUpdate({ _id: formId }, updated).catch((err) => {
-  //       throw new BadRequestException();
+  // static async updateForm(formId: string, body: FormDTOInterface) {
+  //   let questionList;
+  //   if (body.questionList) {
+  //     questionList = body.questionList.map((q: QuestionDTOInterface) => {
+  //       return {
+  //         question_id: q.questionId,
+  //         page: q.page,
+  //         type: q.type,
+  //         title: q.title,
+  //         option: q.option,
+  //         essential: q.essential,
+  //         etc_added: q.etcAdded,
+  //       };
   //     });
   //   }
 
-  //   static async deleteForm(formId: string) {
-  //     await Form.deleteOne({ _id: formId });
-  //   }
+  //   const updated = {
+  //     title: body.title,
+  //     description: body.description,
+  //     category: body.category,
+  //     question_list: questionList,
+  //     accept_response: body.acceptResponse,
+  //     on_board: body.onBoard,
+  //     login_required: body.loginRequired,
+  //     response_modifiable: body.responseModifiable,
+  //   };
+
+  //   await Form.findOneAndUpdate({ _id: formId }, updated).catch((err) => {
+  //     throw new BadRequestException();
+  //   });
+  // }
+
+  // static async deleteForm(formId: string) {
+  //   await Form.deleteOne({ _id: formId });
+  // }
 
   //   static async getForm(formId: string): Promise<any> {
   //     const rawForm = await Form.findOne({ _id: formId }).lean().exec();
