@@ -88,14 +88,9 @@ export default class FormService {
     await this.formRepository.save(form);
 
     // Question Update
-    const oldQuestionList = await this.questionRepository.find({
-      relations: {
-        form: true,
-      },
-      where: {
-        form: {
-          form_id: Number(formId),
-        },
+    const oldQuestionList = await this.questionRepository.findBy({
+      form: {
+        form_id: form.form_id,
       },
     });
     const questionListInDto = body.questionList;
@@ -136,31 +131,44 @@ export default class FormService {
   //   await Form.deleteOne({ _id: formId });
   // }
 
-  //   static async getForm(formId: string): Promise<any> {
-  //     const rawForm = await Form.findOne({ _id: formId }).lean().exec();
-  //     if (rawForm === null) {
-  //       throw new NotFoundException("해당 설문지를 찾을 수 없습니다.");
-  //     }
+  static async getForm(formId: number): Promise<any> {
+    const form = await this.formRepository.findOneBy({ form_id: formId });
 
-  //     const questionList = FormService.getQuestionListForResponse(rawForm.question_list);
-  //     const form = {
-  //       // eslint-disable-next-line no-underscore-dangle
-  //       id: `${rawForm._id}`,
-  //       userID: rawForm.user_id,
-  //       title: rawForm.title,
-  //       description: rawForm.description,
-  //       category: rawForm.category,
-  //       questionList,
-  //       acceptResponse: rawForm.accept_response,
-  //       onBoard: rawForm.on_board,
-  //       loginRequired: rawForm.login_required,
-  //       responseCount: rawForm.response_count,
-  //       responseModifiable: rawForm.response_modifiable,
-  //       createdAt: rawForm.createdAt,
-  //       updatedAt: rawForm.updatedAt,
-  //     };
-  //     return form;
-  //   }
+    const questionList = await this.questionRepository.findBy({
+      form: {
+        form_id: form.form_id,
+      },
+    });
+
+    const questionListForDto = questionList.map((question) => {
+      return {
+        questionId: question.question_order,
+        type: question.question_type,
+        essential: question.essential,
+        etcAdded: question.etc_added,
+        title: question.question_title,
+        option: question.question_options,
+      };
+    });
+
+    const formForDto = {
+      id: form.form_id,
+      userID: form.user.user_id,
+      title: form.form_title,
+      description: form.form_description,
+      category: form.form_category,
+      questionList: questionListForDto,
+      acceptResponse: form.accept_response,
+      onBoard: form.on_board,
+      loginRequired: form.login_required,
+      responseCount: form.response_count,
+      responseModifiable: form.response_modifiable,
+      createdAt: form.created_at,
+      updatedAt: form.updated_at,
+    };
+
+    return formForDto;
+  }
 
   //   static getQuestionListForResponse(rawQuestionList: Array<QuestionInterface>) {
   //     const questionList = rawQuestionList.map((question) => {

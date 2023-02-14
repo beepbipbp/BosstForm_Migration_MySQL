@@ -7,11 +7,11 @@ const formRouter = express.Router();
 
 formRouter.get("/", authMiddleware, FormController.getFormList);
 
-// formRouter.get("/:formId", formCaching, FormController.getForm);
+formRouter.get("/:formId", formCaching, FormController.getForm);
 
 formRouter.post("/", authMiddleware, FormController.createNewForm);
 
-// formRouter.patch("/:formId", authMiddleware, FormController.updateForm);
+formRouter.patch("/:formId", authMiddleware, FormController.updateForm);
 
 // formRouter.delete("/:formId", authMiddleware, FormController.deleteForm);
 
