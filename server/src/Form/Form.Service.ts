@@ -6,11 +6,16 @@ import BadRequestException from "../Common/Exceptions/BadRequest.Exception";
 import myDataSource from "../Loader/MySQL.Loader";
 import Form from "./entities/Form.Entity";
 import User from "../User/entities/User.Entity";
+import Question from "./entities/Question.Entity";
 
 export default class FormService {
   private static formRepository = myDataSource.getRepository(Form);
 
+  private static questionRepository = myDataSource.getRepository(Question);
+
   private static userRepository = myDataSource.getRepository(User);
+
+  private static queryBuilder = myDataSource.createQueryBuilder();
 
   static async createNewForm(userID: number) {
     const currentUser = await this.userRepository.findOneBy({ user_id: userID });
@@ -27,8 +32,7 @@ export default class FormService {
     let rawFormList;
 
     if (cursor === "empty") {
-      rawFormList = await myDataSource
-        .createQueryBuilder()
+      rawFormList = await this.queryBuilder
         .select("form_id", "_id")
         .addSelect("form_title", "title")
         .addSelect("accept_response", "acceptResponse")
@@ -42,8 +46,7 @@ export default class FormService {
         .limit(5)
         .execute();
     } else {
-      rawFormList = await myDataSource
-        .createQueryBuilder()
+      rawFormList = await this.queryBuilder
         .select("form_id", "_id")
         .addSelect("form_title", "title")
         .addSelect("accept_response", "acceptResponse")
@@ -71,35 +74,71 @@ export default class FormService {
   }
 
   // static async updateForm(formId: string, body: FormDTOInterface) {
-  //   let questionList;
-  //   if (body.questionList) {
-  //     questionList = body.questionList.map((q: QuestionDTOInterface) => {
-  //       return {
-  //         question_id: q.questionId,
-  //         page: q.page,
-  //         type: q.type,
-  //         title: q.title,
-  //         option: q.option,
-  //         essential: q.essential,
-  //         etc_added: q.etcAdded,
-  //       };
-  //     });
-  //   }
+  //   // Form Update
+  //   const form = await this.formRepository.findOneBy({ form_id: Number(formId) });
 
-  //   const updated = {
-  //     title: body.title,
-  //     description: body.description,
-  //     category: body.category,
-  //     question_list: questionList,
-  //     accept_response: body.acceptResponse,
-  //     on_board: body.onBoard,
-  //     login_required: body.loginRequired,
-  //     response_modifiable: body.responseModifiable,
-  //   };
+  //   form.form_title = body.title;
+  //   form.form_description = body.description;
+  //   form.form_category = body.category;
+  //   form.accept_response = body.acceptResponse;
+  //   form.on_board = body.onBoard;
+  //   form.login_required = body.loginRequired;
+  //   form.response_modifiable = body.responseModifiable;
 
-  //   await Form.findOneAndUpdate({ _id: formId }, updated).catch((err) => {
-  //     throw new BadRequestException();
+  //   // Question Update
+  //   const currentQuestionList = form.questions;
+  //   const questionListInDto = body.questionList;
+
+  //   currentQuestionList.sort((a, b) => a.question_order - b.question_order);
+  //   questionListInDto.sort((a, b) => a.questionId - b.questionId);
+
+  //   const newQuestionList = questionListInDto.map(async (questionInDto, index) => {
+  //     if (currentQuestionList[index]) {
+  //       currentQuestionList[index].question_type = questionInDto.type;
+  //       currentQuestionList[index].question_title = questionInDto.title;
+  //       currentQuestionList[index].essential = questionInDto.essential;
+  //       currentQuestionList[index].etc_added = questionInDto.etcAdded;
+
+  //       const savedQuestion = await this.questionRepository.save(currentQuestionList[index]);
+
+  //       return savedQuestion;
+  //     }
+  //     const newQuestion = new Question();
+  //     newQuestion.form = form;
+  //     newQuestion.question_order = index + 1;
+
+  //     return 0;
   //   });
+
+  // let questionList;
+  // if (body.questionList) {
+  //   questionList = body.questionList.map((q: QuestionDTOInterface) => {
+  //     return {
+  //       question_id: q.questionId,
+  //       page: q.page,
+  //       type: q.type,
+  //       title: q.title,
+  //       option: q.option,
+  //       essential: q.essential,
+  //       etc_added: q.etcAdded,
+  //     };
+  //   });
+  // }
+
+  // const updated = {
+  //   title: body.title,
+  //   description: body.description,
+  //   category: body.category,
+  //   question_list: questionList,
+  //   accept_response: body.acceptResponse,
+  //   on_board: body.onBoard,
+  //   login_required: body.loginRequired,
+  //   response_modifiable: body.responseModifiable,
+  // };
+
+  // await Form.findOneAndUpdate({ _id: formId }, updated).catch((err) => {
+  //   throw new BadRequestException();
+  // });
   // }
 
   // static async deleteForm(formId: string) {

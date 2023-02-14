@@ -40,7 +40,7 @@ export default class Question {
     type: "boolean",
     default: false,
   })
-  etc_added: true;
+  etc_added: boolean;
 
   @OneToMany(() => QuestionOption, (questionOption) => questionOption.question)
   question_options: QuestionOption[];
