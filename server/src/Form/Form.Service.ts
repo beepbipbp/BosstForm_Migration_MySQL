@@ -73,73 +73,64 @@ export default class FormService {
     return [formList, lastId];
   }
 
-  // static async updateForm(formId: string, body: FormDTOInterface) {
-  //   // Form Update
-  //   const form = await this.formRepository.findOneBy({ form_id: Number(formId) });
+  static async updateForm(formId: string, body: FormDTOInterface) {
+    // Form Update
+    const form = await this.formRepository.findOneBy({ form_id: Number(formId) });
 
-  //   form.form_title = body.title;
-  //   form.form_description = body.description;
-  //   form.form_category = body.category;
-  //   form.accept_response = body.acceptResponse;
-  //   form.on_board = body.onBoard;
-  //   form.login_required = body.loginRequired;
-  //   form.response_modifiable = body.responseModifiable;
+    form.form_title = body.title;
+    form.form_description = body.description;
+    form.form_category = body.category;
+    form.accept_response = body.acceptResponse;
+    form.on_board = body.onBoard;
+    form.login_required = body.loginRequired;
+    form.response_modifiable = body.responseModifiable;
 
-  //   // Question Update
-  //   const currentQuestionList = form.questions;
-  //   const questionListInDto = body.questionList;
+    await this.formRepository.save(form);
 
-  //   currentQuestionList.sort((a, b) => a.question_order - b.question_order);
-  //   questionListInDto.sort((a, b) => a.questionId - b.questionId);
+    // Question Update
+    const oldQuestionList = await this.questionRepository.find({
+      relations: {
+        form: true,
+      },
+      where: {
+        form: {
+          form_id: Number(formId),
+        },
+      },
+    });
+    const questionListInDto = body.questionList;
 
-  //   const newQuestionList = questionListInDto.map(async (questionInDto, index) => {
-  //     if (currentQuestionList[index]) {
-  //       currentQuestionList[index].question_type = questionInDto.type;
-  //       currentQuestionList[index].question_title = questionInDto.title;
-  //       currentQuestionList[index].essential = questionInDto.essential;
-  //       currentQuestionList[index].etc_added = questionInDto.etcAdded;
+    oldQuestionList.sort((a, b) => a.question_order - b.question_order);
+    questionListInDto.sort((a, b) => a.questionId - b.questionId);
 
-  //       const savedQuestion = await this.questionRepository.save(currentQuestionList[index]);
+    const newQuestionList = questionListInDto.map((questionInDto, index) => {
+      if (oldQuestionList[index]) {
+        oldQuestionList[index].question_type = questionInDto.type;
+        oldQuestionList[index].question_title = questionInDto.title;
+        oldQuestionList[index].essential = questionInDto.essential;
+        oldQuestionList[index].etc_added = questionInDto.etcAdded;
+        oldQuestionList[index].question_options = questionInDto.option;
 
-  //       return savedQuestion;
-  //     }
-  //     const newQuestion = new Question();
-  //     newQuestion.form = form;
-  //     newQuestion.question_order = index + 1;
+        return oldQuestionList[index];
+      }
+      const newQuestion = new Question();
+      newQuestion.form = form;
+      newQuestion.question_order = index + 1;
+      newQuestion.question_type = questionInDto.type;
+      newQuestion.question_title = questionInDto.title;
+      newQuestion.essential = questionInDto.essential;
+      newQuestion.etc_added = questionInDto.etcAdded;
+      newQuestion.question_options = questionInDto.option;
 
-  //     return 0;
-  //   });
+      return newQuestion;
+    });
 
-  // let questionList;
-  // if (body.questionList) {
-  //   questionList = body.questionList.map((q: QuestionDTOInterface) => {
-  //     return {
-  //       question_id: q.questionId,
-  //       page: q.page,
-  //       type: q.type,
-  //       title: q.title,
-  //       option: q.option,
-  //       essential: q.essential,
-  //       etc_added: q.etcAdded,
-  //     };
-  //   });
-  // }
+    await this.questionRepository.upsert(newQuestionList, ["question_id"]);
 
-  // const updated = {
-  //   title: body.title,
-  //   description: body.description,
-  //   category: body.category,
-  //   question_list: questionList,
-  //   accept_response: body.acceptResponse,
-  //   on_board: body.onBoard,
-  //   login_required: body.loginRequired,
-  //   response_modifiable: body.responseModifiable,
-  // };
-
-  // await Form.findOneAndUpdate({ _id: formId }, updated).catch((err) => {
-  //   throw new BadRequestException();
-  // });
-  // }
+    // Question Update 이후 Update에 포함되지 않은 Question 삭제
+    const questionListToBeDeleted = oldQuestionList.slice(newQuestionList.length);
+    await this.questionRepository.remove(questionListToBeDeleted);
+  }
 
   // static async deleteForm(formId: string) {
   //   await Form.deleteOne({ _id: formId });

@@ -62,23 +62,23 @@ class FormController {
   //   }
   // }
 
-  // static async updateForm(req: Request, res: Response, next: NextFunction) {
-  //   try {
-  //     const { params, body } = req;
-  //     const { formId } = params;
+  static async updateForm(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { params, body } = req;
+      const { formId } = params;
 
-  //     await FormService.updateForm(formId, body);
-  //     res.status(200).end();
+      await FormService.updateForm(formId, body);
+      res.status(200).end();
 
-  //     // Caching 관련 코드
-  //     // const form = await FormService.getForm(formId);
-  //     // redisCli.set(`form:${formId}`, JSON.stringify(form), { EX: 300 });
-  //   } catch (err) {
-  //     console.log(err);
+      // Caching 관련 코드
+      // const form = await FormService.getForm(formId);
+      // redisCli.set(`form:${formId}`, JSON.stringify(form), { EX: 300 });
+    } catch (err) {
+      console.log(err);
 
-  //     next(err);
-  //   }
-  // }
+      next(err);
+    }
+  }
 
   // static async deleteForm(req: Request, res: Response, next: NextFunction) {
   //   try {
