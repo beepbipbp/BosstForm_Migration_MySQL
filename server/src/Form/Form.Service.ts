@@ -80,8 +80,6 @@ export default class FormService {
       where: { form_id: Number(formId) },
     });
 
-    console.log(form);
-
     form.form_title = body.title;
     form.form_description = body.description;
     form.form_category = body.category;
