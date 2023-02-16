@@ -1,8 +1,6 @@
 /* eslint-disable no-underscore-dangle */
-import { FormDTOInterface, QuestionDTOInterface, QuestionInterface } from "./Form.Interface";
+import { FormDTOInterface } from "./Form.Interface";
 import getDateString from "../Common/Utils/GetDateString";
-import NotFoundException from "../Common/Exceptions/NotFound.Exception";
-import BadRequestException from "../Common/Exceptions/BadRequest.Exception";
 import myDataSource from "../Loader/MySQL.Loader";
 import Form from "./entities/Form.Entity";
 import User from "../User/entities/User.Entity";
@@ -75,7 +73,14 @@ export default class FormService {
 
   static async updateForm(formId: string, body: FormDTOInterface) {
     // Form Update
-    const form = await this.formRepository.findOneBy({ form_id: Number(formId) });
+    const form = await this.formRepository.findOne({
+      relations: {
+        questions: true,
+      },
+      where: { form_id: Number(formId) },
+    });
+
+    console.log(form);
 
     form.form_title = body.title;
     form.form_description = body.description;
@@ -88,9 +93,14 @@ export default class FormService {
     await this.formRepository.save(form);
 
     // Question Update
-    const oldQuestionList = await this.questionRepository.findBy({
-      form: {
-        form_id: form.form_id,
+    const oldQuestionList = await this.questionRepository.find({
+      relations: {
+        form: true,
+      },
+      where: {
+        form: {
+          form_id: form.form_id,
+        },
       },
     });
     const questionListInDto = body.questionList;
@@ -131,8 +141,15 @@ export default class FormService {
   //   await Form.deleteOne({ _id: formId });
   // }
 
-  static async getForm(formId: number): Promise<any> {
-    const form = await this.formRepository.findOneBy({ form_id: formId });
+  static async getForm(formId: number): Promise<FormDTOInterface> {
+    const form = await this.formRepository.findOne({
+      relations: {
+        user: true,
+      },
+      where: {
+        form_id: formId,
+      },
+    });
 
     const questionList = await this.questionRepository.findBy({
       form: {

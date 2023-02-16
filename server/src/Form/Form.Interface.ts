@@ -1,6 +1,5 @@
 interface QuestionDTOInterface {
   questionId: number;
-  page: number;
   type: string;
   title: string;
   option: Array<string>;
@@ -19,6 +18,8 @@ interface QuestionInterface {
 }
 
 interface FormDTOInterface {
+  id?: number;
+  userID?: number;
   title: string;
   description: string;
   category: string;
@@ -27,6 +28,9 @@ interface FormDTOInterface {
   onBoard: boolean;
   loginRequired: boolean;
   responseModifiable: boolean;
+  responseCount?: number;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 interface FormInterface {
