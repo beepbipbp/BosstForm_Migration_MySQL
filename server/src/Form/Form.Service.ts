@@ -91,23 +91,14 @@ export default class FormService {
     await this.formRepository.save(form);
 
     // Question Update
-    const oldQuestionList = await this.questionRepository.find({
-      relations: {
-        form: true,
-      },
-      where: {
-        form: {
-          form_id: form.form_id,
-        },
-      },
-    });
+    const oldQuestionList = form.questions;
     const questionListInDto = body.questionList;
 
     oldQuestionList.sort((a, b) => a.question_order - b.question_order);
-    questionListInDto.sort((a, b) => a.questionId - b.questionId);
 
     const newQuestionList = questionListInDto.map((questionInDto, index) => {
       if (oldQuestionList[index]) {
+        oldQuestionList[index].form = form;
         oldQuestionList[index].question_type = questionInDto.type;
         oldQuestionList[index].question_title = questionInDto.title;
         oldQuestionList[index].essential = questionInDto.essential;
