@@ -126,9 +126,16 @@ export default class FormService {
     await this.questionRepository.remove(questionListToBeDeleted);
   }
 
-  // static async deleteForm(formId: string) {
-  //   await Form.deleteOne({ _id: formId });
-  // }
+  static async deleteForm(formId: number) {
+    await myDataSource
+      .createQueryBuilder()
+      .delete()
+      .from(Question)
+      .where("fk_form_id = :form_id", { form_id: formId })
+      .execute();
+
+    await this.formRepository.delete(formId);
+  }
 
   static async getForm(formId: number): Promise<FormDTOInterface> {
     const form = await this.formRepository.findOne({
@@ -175,19 +182,4 @@ export default class FormService {
 
     return formForDto;
   }
-
-  //   static getQuestionListForResponse(rawQuestionList: Array<QuestionInterface>) {
-  //     const questionList = rawQuestionList.map((question) => {
-  //       return {
-  //         questionId: question.question_id,
-  //         page: question.page,
-  //         type: question.type,
-  //         essential: question.essential,
-  //         etcAdded: question.etc_added,
-  //         title: question.title,
-  //         option: question.option,
-  //       };
-  //     });
-  //     return questionList;
-  //   }
 }

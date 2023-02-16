@@ -12,6 +12,6 @@ formRouter.post("/", authMiddleware, FormController.createNewForm);
 
 formRouter.patch("/:formId", authMiddleware, FormController.updateForm);
 
-// formRouter.delete("/:formId", authMiddleware, FormController.deleteForm);
+formRouter.delete("/:formId", authMiddleware, FormController.deleteForm);
 
 export default formRouter;

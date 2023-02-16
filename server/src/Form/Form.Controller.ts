@@ -82,17 +82,19 @@ class FormController {
     }
   }
 
-  // static async deleteForm(req: Request, res: Response, next: NextFunction) {
-  //   try {
-  //     const { formId } = req.params;
-  //     await FormService.deleteForm(formId);
-  //     res.status(204).end();
-  //   } catch (err) {
-  //     console.log(err);
+  static async deleteForm(req: Request, res: Response, next: NextFunction) {
+    try {
+      const { formId } = req.params;
 
-  //     next(err);
-  //   }
-  // }
+      await FormService.deleteForm(Number(formId));
+
+      res.status(204).end();
+    } catch (err) {
+      console.log(err);
+
+      next(err);
+    }
+  }
 }
 
 export default FormController;
